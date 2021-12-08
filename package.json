@@ -1,0 +1,22 @@
+{
+  "name": "@27Works/posto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "jim@27.works",
+  "repository": {
+    "url": "https://github.com/27Works/posto.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@dadi/nodemailer-browser-transport": "^1.0.1",
+    "email-templates": "^8.0.8",
+    "nodemailer": "^6.7.2",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "nunjucks": "^3.2.3"
+  }
+}
