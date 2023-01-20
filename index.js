@@ -1,6 +1,5 @@
 const Email = require('email-templates')
 const Mailman = require('./mailman')
-const path = require('path')
 
 module.exports = function (options) {
   return new Posto(options)
@@ -11,14 +10,14 @@ function Posto (options) {
 }
 
 Posto.prototype.send = function (data, send = true) {
-  const { fromAddress, fromName, sendEmail, templatePath } = this.options
+  const { fromAddress, fromName, sendEmail, templatePath, useMjml = false } = this.options
 
   if (!fromAddress || !fromName || !templatePath) {
     const error = new Error('You must pass a configuration object with properties fromAddress, fromName, sendEmail, templatePath')
     throw error
   }
 
-  const email = new Email({
+  const options = {
     juice: true,
     juiceResources: {
       preserveImportant: true,
@@ -39,7 +38,15 @@ Posto.prototype.send = function (data, send = true) {
         extension: 'njk'
       }
     }
-  })
+  }
+
+  if (useMjml) {
+    options.render = (view, locals) => {
+      return require('./lib/mjml')(templatePath)(view, locals)
+    }
+  }
+
+  const email = new Email(options)
 
   const { attachments, bcc, cc, to, template } = data
 
@@ -52,7 +59,7 @@ Posto.prototype.send = function (data, send = true) {
       to
     },
     locals: data
-  })  
+  })
     .then(response => {
       return Promise.resolve(response)
     })
